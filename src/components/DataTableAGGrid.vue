@@ -17,6 +17,12 @@
 <script>
 import { AgGridVue } from "ag-grid-vue3"; // the AG Grid Vue Component
 import { reactive, onMounted, ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useProductStore } from "../store/products";
+
+const productStore = useProductStore();
+
+const { products } = storeToRefs(productStore);
 
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
@@ -34,11 +40,16 @@ export default {
       gridApi.value = params.api;
     };
 
-    const rowData = reactive({}); // Set rowData to Array of Objects, one Object per Row
+    const rowData = reactive([]); // Set rowData to Array of Objects, one Object per Row
 
     // Each Column Definition results in one Column.
     const columnDefs = reactive({
-      value: [{ field: "make" }, { field: "model" }, { field: "price" }],
+      value: [
+        { field: "name", headerName: "Name" },
+        { field: "description", headerName: "Description" },
+        { field: "price", headerName: "Price" },
+        { field: "quantity", headerName: "Units" },
+      ],
     });
 
     // DefaultColDef sets props common to all Columns
@@ -50,9 +61,8 @@ export default {
 
     // Example load data from server
     onMounted(() => {
-      fetch("https://www.ag-grid.com/example-assets/row-data.json")
-        .then((result) => result.json())
-        .then((remoteRowData) => (rowData.value = remoteRowData));
+      console.log(products.value);
+      rowData.value = products.value;
     });
 
     return {

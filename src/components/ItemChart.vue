@@ -14,10 +14,15 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, defineComponent } from "vue";
+import { storeToRefs } from "pinia";
+import { useProductStore } from "../store/products";
+
+const productStore = useProductStore();
+
+const { products } = storeToRefs(productStore);
 
 use([
   CanvasRenderer,
-  BarChart,
   LineChart,
   TooltipComponent,
   PieChart,
@@ -27,12 +32,15 @@ use([
 ]);
 
 export default defineComponent({
-  name: "HelloWorld",
+  name: "ItemChart",
   components: {
     VChart,
   },
   provide: {
     [THEME_KEY]: "light",
+  },
+  mounted() {
+    console.log(this.option.series[0].data);
   },
   setup() {
     const option = ref({
@@ -48,14 +56,12 @@ export default defineComponent({
         {
           name: "Access From",
           type: "pie",
-          radius: "50%",
-          data: [
-            { value: 1048, name: "Search Engine" },
-            { value: 735, name: "Direct" },
-            { value: 580, name: "Email" },
-            { value: 484, name: "Union Ads" },
-            { value: 300, name: "Video Ads" },
-          ],
+          radius: "70%",
+          data: products.value.map((product) => ({
+            name: product.name,
+            value: product.quantity,
+          })),
+
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
