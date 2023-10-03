@@ -9,7 +9,7 @@ export const useSalesStore = defineStore("sales", {
     saleDataYear: [],
     totalSales: 0,
     totalRevenue: 0,
-    salesRepresentaion: "Daily",
+    salesRepresentaion: "Monthly",
     sales: [],
   }),
   getters: {
@@ -22,19 +22,27 @@ export const useSalesStore = defineStore("sales", {
         { xAxisLabel: "Thursday", totalSales: 0, totalRevenue: 0 },
         { xAxisLabel: "Friday", totalSales: 0, totalRevenue: 0 },
         { xAxisLabel: "Saturday", totalSales: 0, totalRevenue: 0 },
-        ,
       ];
+
+      const today = new Date();
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(today.getDate() - 7); // 7 days ago
+
       state.saledata.forEach((sale) => {
-        const date = new Date(sale.saleTime);
-        const dayName = new Intl.DateTimeFormat("en-US", {
-          weekday: "long",
-        }).format(date);
+        const saleDate = new Date(sale.saleTime);
 
-        const dayObject = results.find((obj) => obj.xAxisLabel === dayName);
+        // Only process if the sale was in the last week
+        if (saleDate >= oneWeekAgo && saleDate <= today) {
+          const dayName = new Intl.DateTimeFormat("en-US", {
+            weekday: "long",
+          }).format(saleDate);
 
-        if (dayObject) {
-          dayObject.totalSales += sale.ItemsSold;
-          dayObject.totalRevenue += parseFloat(sale.revenue.replace("$", ""));
+          const dayObject = results.find((obj) => obj.xAxisLabel === dayName);
+
+          if (dayObject) {
+            dayObject.totalSales += sale.ItemsSold;
+            dayObject.totalRevenue += parseFloat(sale.revenue.replace("$", ""));
+          }
         }
       });
 
@@ -60,20 +68,30 @@ export const useSalesStore = defineStore("sales", {
 
       state.saledata.forEach((sale) => {
         const date = new Date(sale.saleTime);
-        const monthName = new Intl.DateTimeFormat("en-US", {
-          month: "long",
-        }).format(date);
+        const year = date.getFullYear();
 
-        const monthObject = results.find((obj) => obj.xAxisLabel === monthName);
+        // Only process if the sale happened in the year 2023
+        if (year === 2023) {
+          const monthName = new Intl.DateTimeFormat("en-US", {
+            month: "long",
+          }).format(date);
 
-        if (monthObject) {
-          monthObject.totalSales += 1;
-          monthObject.totalRevenue += parseFloat(sale.revenue.replace("$", ""));
+          const monthObject = results.find(
+            (obj) => obj.xAxisLabel === monthName
+          );
+
+          if (monthObject) {
+            monthObject.totalSales += 1;
+            monthObject.totalRevenue += parseFloat(
+              sale.revenue.replace("$", "")
+            );
+          }
         }
       });
+
       state.saleDataMonth = results;
 
-      return;
+      return results;
     },
 
     getSaleDataPerHour: (state) => {
@@ -82,16 +100,27 @@ export const useSalesStore = defineStore("sales", {
         results.push({ xAxisLabel: i, totalSales: 0, totalRevenue: 0 });
       }
 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset hours, minutes, seconds and milliseconds
+
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+
       state.saledata.forEach((sale) => {
         const saleDate = new Date(sale.saleTime);
-        const hour = saleDate.getHours();
 
-        const hourObject = results[hour];
-        hourObject.totalSales += 1;
-        hourObject.totalRevenue += parseFloat(sale.revenue.replace("$", ""));
+        // Only process if the sale was yesterday
+        if (saleDate >= yesterday && saleDate < today) {
+          const hour = saleDate.getHours();
+          const hourObject = results[hour];
+          hourObject.totalSales += 1;
+          hourObject.totalRevenue += parseFloat(sale.revenue.replace("$", ""));
+        }
       });
+
       state.saleDataHour = results;
-      return;
+
+      return results;
     },
 
     getSaleDataPerYear: (state) => {
@@ -120,91 +149,42 @@ export const useSalesStore = defineStore("sales", {
       return;
     },
 
-    // getTotalSalesRevenue: (state) => {
-    //   state.totalRevenue = state.saledata.reduce(
-    //     (acu, curr) => acu + curr.revenue,
-    //     0
-    //   );
-
-    //   return;
-    // },
-    // getTotalItemsSold: (state) => {
-    //   state.totalSales = state.saledata.reduce(
-    //     (acu, curr) => acu + curr.ItemsSold,
-    //     0
-    //   );
-
-    //   return;
-    // },
+    getTotalRevenueCount: (state) => {
+      const initialValue = 0;
+      state.totalRevenue = state.sales.reduce((acu, curr) => {
+        return acu + curr.totalRevenue;
+      }, initialValue);
+    },
+    getTotalSaleCount: (state) => {
+      const initialValue = 0;
+      state.totalSales = state.sales.reduce((acu, curr) => {
+        return acu + curr.totalSales;
+      }, initialValue);
+    },
   },
   actions: {
-    increment() {
-      this.count++;
-    },
-    // getSaleDataPerDay() {
-    //   const results = {
-    //     Sunday: { totalSales: 0, totalRevenue: 0 },
-    //     Monday: { totalSales: 0, totalRevenue: 0 },
-    //     Tuesday: { totalSales: 0, totalRevenue: 0 },
-    //     Wednesday: { totalSales: 0, totalRevenue: 0 },
-    //     Thursday: { totalSales: 0, totalRevenue: 0 },
-    //     Friday: { totalSales: 0, totalRevenue: 0 },
-    //     Saturday: { totalSales: 0, totalRevenue: 0 },
-    //   };
-    //   this.saledata.forEach((sale) => {
-    //     const date = new Date(sale.saleTime);
-    //     const day = new Intl.DateTimeFormat("en-US", {
-    //       weekday: "long",
-    //     }).format(date);
-
-    //     results[day].totalSales += sale.ItemsSold;
-    //     results[day].totalRevenue += parseFloat(sale.revenue.replace("$", ""));
-    //   });
-    //   //this.saleDataDay = results;
-    //   return results
-    // },
     getChartDataAction(val) {
       console.log(val);
       if (val == "Daily") {
         this.salesRepresentaion = val;
-
         this.sales = this.saleDataHour;
       } else if (val == "Weekly") {
         this.salesRepresentaion = val;
         this.sales = this.saleDataDay;
-        console.log(this.sales);
       } else if (val == "Monthly") {
         this.salesRepresentaion = val;
         this.sales = this.saleDataMonth;
-        console.log(this.sales);
       } else if (val == "Yearly") {
         this.salesRepresentaion = val;
         this.sales = this.saleDataYear;
-        console.log(this.sales);
       }
     },
-    // generateDays(days) {
-    //   let result = {};
-    //   for (let i = 1; i <= days; i++) {
-    //     result[`Day ${i}`] = sales;
-    //   }
-    //   return result;
-    // },
-    // generateMonth() {
-    //   const monthlySales = {
-    //     January: generateDays(31),
-    //     February: generateDays(28),
-    //     March: generateDays(31),
-    //     April: generateDays(30),
-    //     May: generateDays(31),
-    //     June: generateDays(30),
-    //     July: generateDays(31),
-    //     August: generateDays(31),
-    //     September: generateDays(30),
-    //     October: generateDays(31),
-    //     November: generateDays(30),
-    //     December: generateDays(31),
-    //   };
-    // },
+
+    orderCompleteAction(val) {
+      console.log(val);
+      this.saledata.push(val);
+      this.getChartDataAction("Daily");
+      console.log(this.saledata);
+    },
   },
 });

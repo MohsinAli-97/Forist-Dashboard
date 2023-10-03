@@ -13,7 +13,7 @@ import {
   TitleComponent,
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
-import { ref, defineComponent } from "vue";
+import { ref, defineComponent, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useProductStore } from "../store/products";
 
@@ -39,9 +39,7 @@ export default defineComponent({
   provide: {
     [THEME_KEY]: "light",
   },
-  mounted() {
-    console.log(this.option.series[0].data);
-  },
+
   setup() {
     const option = ref({
       title: {
@@ -54,7 +52,7 @@ export default defineComponent({
 
       series: [
         {
-          name: "Access From",
+          name: "Current item stock",
           type: "pie",
           radius: "70%",
           data: products.value.map((product) => ({
@@ -71,6 +69,12 @@ export default defineComponent({
           },
         },
       ],
+    });
+    watch(products.value, (newProducts) => {
+      option.value.series[0].data = newProducts.map((product) => ({
+        name: product.name,
+        value: product.quantity,
+      }));
     });
     return { option };
   },

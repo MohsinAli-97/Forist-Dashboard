@@ -9,7 +9,7 @@ export const useProductStore = defineStore("product", {
         price: 129.99,
         description:
           "Noise-cancelling over-the-ear headphones with high-quality sound.",
-        quantity: 120,
+        quantity: 220,
       },
       {
         name: "Laptop Stand Adjustable",
@@ -65,37 +65,6 @@ export const useProductStore = defineStore("product", {
         description: "Rechargeable toothbrush with multiple brushing modes.",
         quantity: 210,
       },
-      {
-        name: "Gardening Tool Set",
-        price: 34.99,
-        description: "Essential tools for gardening enthusiasts.",
-        quantity: 220,
-      },
-      {
-        name: "Electric Kettle 1.5L",
-        price: 44.99,
-        description: "Quick boiling kettle with auto-shut feature.",
-        quantity: 180,
-      },
-      {
-        name: "Wireless Phone Charger",
-        price: 24.99,
-        description: "Fast charging wireless pad for smartphones.",
-        quantity: 310,
-      },
-      {
-        name: "Novel: The Great Adventures",
-        price: 14.99,
-        description: "Bestselling fiction book by renowned author.",
-        quantity: 200,
-      },
-      {
-        name: "Stainless Steel Watch",
-        price: 259.99,
-        description:
-          "Elegant timepiece with scratch-resistant glass and waterproof design.",
-        quantity: 100,
-      },
     ],
   }),
   getters: {
@@ -108,6 +77,21 @@ export const useProductStore = defineStore("product", {
     addProductAction(i) {
       this.products.push(i);
       console.log(this.products);
+    },
+    updateProductFromOrderPlacedAction(item) {
+      if (item.status) {
+        console.log("Remove product count");
+        const productIndex = this.products.findIndex(
+          (el) => el.name == item.name
+        );
+        this.products[productIndex].quantity -= item.totalUnits;
+      } else if (!item.status) {
+        const productIndex = this.products.findIndex(
+          (el) => el.name == item.name
+        );
+        this.products[productIndex].quantity += item.totalUnits;
+        console.log("Add product count");
+      }
     },
   },
 });

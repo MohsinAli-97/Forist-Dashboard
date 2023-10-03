@@ -1,4 +1,11 @@
 <template>
+  <div class="search-box">
+    <input
+      v-model="searchString"
+      @input="applyFilter"
+      placeholder="Search..."
+    />
+  </div>
   <button @click="deselectRows">deselect rows</button>
   <ag-grid-vue
     class="ag-theme-alpine"
@@ -15,7 +22,7 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue3"; // the AG Grid Vue Component
+import { AgGridVue } from "ag-grid-vue3";
 import { reactive, onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useProductStore } from "../store/products";
@@ -24,8 +31,8 @@ const productStore = useProductStore();
 
 const { products } = storeToRefs(productStore);
 
-import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
-import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
 
 export default {
   name: "App",
@@ -33,45 +40,51 @@ export default {
     AgGridVue,
   },
   setup() {
-    const gridApi = ref(null); // Optional - for accessing Grid's API
+    const gridApi = ref(null);
+    const searchString = ref("");
 
-    // Obtain API from grid's onGridReady event
     const onGridReady = (params) => {
       gridApi.value = params.api;
     };
 
-    const rowData = reactive([]); // Set rowData to Array of Objects, one Object per Row
+    const rowData = reactive([]);
 
-    // Each Column Definition results in one Column.
     const columnDefs = reactive({
       value: [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description" },
         { field: "price", headerName: "Price" },
         { field: "quantity", headerName: "Units" },
+        {
+          headerName: "Edit",
+          cellRenderer: (params) => {
+            return `<v-btn small @click="editClicked(params) variant="outlined"">Edit</v-btn>`;
+          },
+        },
       ],
     });
-
-    // DefaultColDef sets props common to all Columns
     const defaultColDef = {
       sortable: true,
       filter: true,
       flex: 1,
     };
 
-    // Example load data from server
     onMounted(() => {
-      console.log(products.value);
       rowData.value = products.value;
     });
+
+    const applyFilter = () => {
+      gridApi.value.setQuickFilter(searchString.value);
+    };
 
     return {
       onGridReady,
       columnDefs,
       rowData,
+      searchString,
+      applyFilter,
       defaultColDef,
       cellWasClicked: (event) => {
-        // Example of consuming Grid Event
         console.log("cell was clicked", event);
       },
       deselectRows: () => {

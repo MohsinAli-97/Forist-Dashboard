@@ -2,7 +2,8 @@
   <div class="flex gap-3 bg-slate-100">
     <section class="basis-[35%] flex flex-col gap-3 mt-5 ms-3">
       <v-sheet elevation="0" rounded="lg" class="!border !border-slate-200">
-        <div class="flex justify-between flex p-5 h-[200px] items-center">
+        <p class="mt-5 ms-5 text-slate-500">{{ salesRepresentaion }}</p>
+        <div class="flex justify-between flex p-5 h-[25vh] items-center">
           <v-sheet
             rounded="lg"
             class="basis-[45%] text-center h-[70%] pt-[5%] !border !border-slate-200 !bg-slate-100"
@@ -33,8 +34,8 @@
           <p>Sales representaion</p>
           <select
             class="px-4 bg-slate-200 rounded-lg py-2 m-2"
+            v-model="salesRepresentaion"
             @change="getChartData()"
-            v-model="chartRenderOption"
           >
             <option value="Daily">Daily</option>
             <option value="Weekly">Weekly</option>
@@ -52,7 +53,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, watchEffect } from "vue";
 
 import SalesChart from "./SalesChart.vue";
 import ItemChart from "./ItemChart.vue";
@@ -61,29 +62,25 @@ import { storeToRefs } from "pinia";
 import { useSalesStore } from "../store/sales";
 
 const salesStore = useSalesStore();
-const {
-  salesRepresentaion,
-  totalSales,
-  totalRevenue,
-  saleDataDay,
-  saleDataMonth,
-  saleDataHour,
-  saleDataYear,
-  sales,
-} = storeToRefs(salesStore);
-const chartRenderOption = ref(salesRepresentaion);
+const { salesRepresentaion, totalSales, totalRevenue } =
+  storeToRefs(salesStore);
 
 function getChartData() {
-  salesStore.getChartDataAction(chartRenderOption.value);
-  console.log(sales.value);
+  salesStore.getChartDataAction(salesRepresentaion.value);
 }
 
+watchEffect(() => {
+  salesStore.getTotalRevenueCount;
+  salesStore.getTotalSaleCount;
+});
+
 onMounted(() => {
-  salesStore.getTotalSalesRevenue;
-  salesStore.getTotalItemsSold;
   salesStore.getSaleDataPerDay;
   salesStore.getSaleDataPerMonth;
   salesStore.getSaleDataPerHour;
   salesStore.getSaleDataPerYear;
+  salesStore.getTotalItemsSold;
+  salesStore.getTotalRevenueCount;
+  salesStore.getTotalSaleCount;
 });
 </script>

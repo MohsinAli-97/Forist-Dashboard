@@ -18,14 +18,13 @@ import { useSalesStore } from "../store/sales";
 
 const salesStore = useSalesStore();
 
-const { sales, saleDataHour } = storeToRefs(salesStore);
+const { sales, saleDataHour, salesRepresentaion } = storeToRefs(salesStore);
 
 use([
   CanvasRenderer,
   BarChart,
   LineChart,
   TooltipComponent,
-
   GridComponent,
   MarkPointComponent,
 ]);
@@ -47,6 +46,11 @@ export default defineComponent({
   setup() {
     const option = ref({});
     watchEffect(() => {
+      salesStore.getSaleDataPerDay;
+      salesStore.getSaleDataPerMonth;
+      salesStore.getSaleDataPerHour;
+      salesStore.getSaleDataPerYear;
+      salesStore.getChartDataAction(salesRepresentaion.value);
       option.value = {
         tooltip: {
           trigger: "axis",
