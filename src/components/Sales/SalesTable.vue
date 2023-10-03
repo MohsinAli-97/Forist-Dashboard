@@ -14,10 +14,10 @@
       <tr v-for="item in orderItems" :key="item.transactionId">
         <td class="text-slate-400">{{ item.transactionId }}</td>
         <td>{{ item.totalUnits }}</td>
-        <td>{{ item.price }}</td>
+        <td class="text-green">$ {{ item.price }}</td>
 
         <td class="text-center">
-          <p class="bg-slate-200 text-green">Pending</p>
+          <p class="text-slate-400">Pending</p>
         </td>
         <td>
           <v-btn
@@ -196,8 +196,7 @@ function confirmOrderHandler(item) {
     ItemsSold: item.totalUnits,
     saleStatus: true,
   });
-  console.log(item);
-  console.log(salesRepresentaion.value);
+
   this.orderItems = this.orderItems.filter(
     (el) => el.transactionId != item.transactionId
   );

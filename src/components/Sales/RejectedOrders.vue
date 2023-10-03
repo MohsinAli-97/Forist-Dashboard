@@ -12,19 +12,17 @@
       <tr v-for="item in rejectedSales" :key="item.transactionId">
         <td>{{ item.saleId }}</td>
         <td class="text-green">{{ item.saleAmount }}</td>
-        <td class="text-red">Rejected</td>
+        <td class="text-red-500">Rejected</td>
       </tr>
     </tbody>
   </v-table>
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useSalesStore } from "../../store/sales";
 
 const salesStore = useSalesStore();
 const { rejectedSales } = storeToRefs(salesStore);
-console.log(rejectedSales.value);
 </script>

@@ -73,18 +73,14 @@ export const useProductStore = defineStore("product", {
       const result = state.products.filter((el) => el.quantity < 150);
 
       state.lowStockProducts = result;
-      console.log(state.lowStockProducts);
     },
   },
   actions: {
     addProductAction(i) {
       this.products.push(i);
-      console.log(this.products);
     },
     updateProductFromOrderPlacedAction(item) {
       if (item.status) {
-        console.log(item);
-        console.log("Remove product count");
         const productIndex = this.products.findIndex(
           (el) => el.name == item.name
         );
@@ -94,11 +90,9 @@ export const useProductStore = defineStore("product", {
           (el) => el.name == item.name
         );
         this.products[productIndex].quantity += item.totalUnits;
-        console.log("Add product count");
       }
     },
     updateProduct(item) {
-      console.log(item);
       const productIndex = this.products.findIndex(
         (el) => el.name == item.name
       );

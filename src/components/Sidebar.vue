@@ -32,7 +32,7 @@
           :to="{ name: 'Products' }"
           :exact="'/src/components/Products.vue' ? true : false"
           prepend-icon="mdi-cart-outline"
-          title="Products"
+          title="Products Registration"
           value="products"
         ></v-list-item>
 

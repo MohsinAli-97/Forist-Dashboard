@@ -30,7 +30,6 @@ const { lowStockProducts } = storeToRefs(productStore);
 const lowStockProductsLength = ref();
 
 watch(lowStockProducts, (newValue) => {
-  console.log(newValue);
   lowStockProductsLength.value = newValue.length;
 });
 </script>
