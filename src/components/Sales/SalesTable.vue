@@ -5,9 +5,7 @@
       <tr>
         <th class="text-left">Transaction Id</th>
         <th class="text-left">Item's count</th>
-
         <th class="text-left">Total</th>
-
         <th class="text-left">Status</th>
         <th class="text-left">Action</th>
       </tr>
@@ -45,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { toast } from "vue3-toastify";
 import { storeToRefs } from "pinia";
 
@@ -62,6 +60,10 @@ today.setHours(0, 0, 0, 0);
 
 const yesterday = new Date(today);
 yesterday.setDate(today.getDate() - 1);
+
+watchEffect(() => {
+  productStore.getProductsInventoryLow;
+});
 
 const orderItems = ref([
   {
@@ -191,20 +193,24 @@ function confirmOrderHandler(item) {
     saleId: item.transactionId,
     saleTime: item.time,
     revenue: `$ ${item.price}`,
-    ItemsSold: item.orderItems,
+    ItemsSold: item.totalUnits,
     saleStatus: true,
   });
+  console.log(item);
   console.log(salesRepresentaion.value);
   this.orderItems = this.orderItems.filter(
     (el) => el.transactionId != item.transactionId
   );
   productStore.updateProductFromOrderPlacedAction(item);
   toast.success(`Order # ${item.transactionId} has been processed`);
-  //salesStore.getChartDataAction(salesRepresentaion.value);
 }
 
 function cancelOrderHandler(item) {
-  console.log(item);
+  salesStore.orderRejectAction({
+    saleId: item.transactionId,
+    saleAmount: `$ ${item.price}`,
+  });
+
   this.orderItems = this.orderItems.filter(
     (el) => el.transactionId != item.transactionId
   );

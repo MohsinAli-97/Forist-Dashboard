@@ -1,12 +1,13 @@
 <template>
+  <Notification />
   <div class="flex gap-3 bg-slate-100">
     <section class="basis-[35%] flex flex-col gap-3 mt-5 ms-3">
       <v-sheet elevation="0" rounded="lg" class="!border !border-slate-200">
         <p class="mt-5 ms-5 text-slate-500">{{ salesRepresentaion }}</p>
-        <div class="flex justify-between flex p-5 h-[25vh] items-center">
+        <div class="flex justify-between flex p-5 h-[170px] items-center">
           <v-sheet
             rounded="lg"
-            class="basis-[45%] text-center h-[70%] pt-[5%] !border !border-slate-200 !bg-slate-100"
+            class="basis-[45%] text-center pt-[5%] !border !border-slate-200 !bg-slate-100"
           >
             <v-icon icon="mdi-currency-usd"></v-icon>
             <p class="text-slate-500">Total Sales</p>
@@ -14,7 +15,7 @@
           </v-sheet>
           <v-sheet
             rounded="lg"
-            class="basis-[45%] text-center h-[70%] pt-[5%] !border !border-slate-200 !bg-slate-100"
+            class="basis-[45%] text-center pt-[5%] !border !border-slate-200 !bg-slate-100"
           >
             <v-icon icon="mdi-package-variant-closed-check"></v-icon>
             <p class="text-slate-500">Total Orders</p>
@@ -25,6 +26,11 @@
       <v-sheet rounded="lg" class="!border !border-slate-200">
         <section class="pt-2">
           <ItemChart />
+        </section>
+      </v-sheet>
+      <v-sheet rounded="lg" class="!border !border-slate-200">
+        <section class="pt-2">
+          <RejectedOrdersTable />
         </section>
       </v-sheet>
     </section>
@@ -58,6 +64,8 @@ import { onMounted, watchEffect } from "vue";
 import SalesChart from "../Sales/SalesChart.vue";
 import ItemChart from "./ItemChart.vue";
 import SalesTable from "../Sales/SalesTable.vue";
+import RejectedOrdersTable from "./RejectedOrders.vue";
+import Notification from "./Notification.vue";
 import { storeToRefs } from "pinia";
 import { useSalesStore } from "../../store/sales";
 

@@ -56,7 +56,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useProductStore } from "../store/products";
+import { useProductStore } from "../../store/products";
 import { toast } from "vue3-toastify";
 
 const productStore = useProductStore();

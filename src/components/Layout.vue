@@ -1,6 +1,6 @@
 <template>
-  <MainPage />
-  <div class="flex border-t border-black w-100">
+  <MainPage class="bg-white fixed top-0 z-[50] border" />
+  <div class="flex w-100 mt-20">
     <section class="">
       <Sidebar />
     </section>

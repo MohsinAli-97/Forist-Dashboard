@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :option="option" />
+  <v-chart class="chart" :option="option" autoresize />
 </template>
 
 <script>
@@ -30,7 +30,7 @@ use([
 ]);
 
 export default defineComponent({
-  name: "HelloWorld",
+  name: "SalesChart",
   components: {
     VChart,
   },

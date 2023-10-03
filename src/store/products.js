@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 export const useProductStore = defineStore("product", {
   state: () => ({
+    lowStockProducts: [],
+
     products: [
       {
         name: "Wireless Bluetooth Headphones",
@@ -67,6 +69,12 @@ export const useProductStore = defineStore("product", {
   }),
   getters: {
     getProducts: (state) => state.products,
+    getProductsInventoryLow: (state) => {
+      const result = state.products.filter((el) => el.quantity < 150);
+
+      state.lowStockProducts = result;
+      console.log(state.lowStockProducts);
+    },
   },
   actions: {
     addProductAction(i) {
@@ -75,6 +83,7 @@ export const useProductStore = defineStore("product", {
     },
     updateProductFromOrderPlacedAction(item) {
       if (item.status) {
+        console.log(item);
         console.log("Remove product count");
         const productIndex = this.products.findIndex(
           (el) => el.name == item.name

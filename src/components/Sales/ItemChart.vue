@@ -1,11 +1,11 @@
 <template>
-  <v-chart class="chart" :option="option" />
+  <v-chart class="chart" :option="option" autoresize />
 </template>
 
 <script>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { BarChart, LineChart, PieChart } from "echarts/charts";
+import { LineChart, PieChart } from "echarts/charts";
 import {
   TooltipComponent,
   GridComponent,

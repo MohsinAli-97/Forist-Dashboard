@@ -996,4 +996,10 @@
 {"saleId":996,"saleTime":"2020-01-25 13:08:38","revenue":"$62.06","ItemsSold":18,"saleStatus":true},
 {"saleId":997,"saleTime":"2019-01-20 00:42:11","revenue":"$40.44","ItemsSold":21,"saleStatus":true},
 {"saleId":998,"saleTime":"2021-01-12 22:54:14","revenue":"$18.05","ItemsSold":11,"saleStatus":false},
-{"saleId":999,"saleTime":"2019-05-20 17:34:08","revenue":"$51.59","ItemsSold":4,"saleStatus":true}]
+{"saleId":999,"saleTime":"2019-05-20 17:34:08","revenue":"$51.59","ItemsSold":4,"saleStatus":true},
+{"saleId":999,"saleTime":"2023-10-03 9:00:00","revenue":"$21.59","ItemsSold":4,"saleStatus":true},
+{"saleId":999,"saleTime":"2023-10-03 2:00:00","revenue":"$11.59","ItemsSold":2,"saleStatus":true},
+{"saleId":999,"saleTime":"2023-10-03 5:00:00","revenue":"$5.59","ItemsSold":1,"saleStatus":true},
+{"saleId":999,"saleTime":"2023-10-03 8:00:00","revenue":"$32.59","ItemsSold":6,"saleStatus":true},
+{"saleId":999,"saleTime":"2023-10-03 20:00:00","revenue":"$67.59","ItemsSold":5,"saleStatus":true},
+{"saleId":999,"saleTime":"2023-10-03 14:00:00","revenue":"$267.59","ItemsSold":17,"saleStatus":true} ]

@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
-    path: "/Mainpage",
+    path: "/",
+    redirect: "/Sales",
     name: "home",
     component: () => import("../components/MainPage.vue"),
   },
@@ -19,7 +20,7 @@ const routes = [
   {
     path: "/Products",
     name: "Products",
-    component: () => import("../components/Products.vue"),
+    component: () => import("../components//Product/Products.vue"),
   },
 ];
 

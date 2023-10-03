@@ -11,6 +11,11 @@ export const useSalesStore = defineStore("sales", {
     totalRevenue: 0,
     salesRepresentaion: "Monthly",
     sales: [],
+    rejectedSales: [
+      { saleId: "TX100231", saleAmount: "$11.90" },
+      { saleId: "TX101231", saleAmount: "$178" },
+      { saleId: "TX120875", saleAmount: "$39" },
+    ],
   }),
   getters: {
     getSaleDataPerDay: (state) => {
@@ -26,12 +31,11 @@ export const useSalesStore = defineStore("sales", {
 
       const today = new Date();
       const oneWeekAgo = new Date();
-      oneWeekAgo.setDate(today.getDate() - 7); // 7 days ago
+      oneWeekAgo.setDate(today.getDate() - 7);
 
       state.saledata.forEach((sale) => {
         const saleDate = new Date(sale.saleTime);
 
-        // Only process if the sale was in the last week
         if (saleDate >= oneWeekAgo && saleDate <= today) {
           const dayName = new Intl.DateTimeFormat("en-US", {
             weekday: "long",
@@ -70,7 +74,6 @@ export const useSalesStore = defineStore("sales", {
         const date = new Date(sale.saleTime);
         const year = date.getFullYear();
 
-        // Only process if the sale happened in the year 2023
         if (year === 2023) {
           const monthName = new Intl.DateTimeFormat("en-US", {
             month: "long",
@@ -101,7 +104,7 @@ export const useSalesStore = defineStore("sales", {
       }
 
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Reset hours, minutes, seconds and milliseconds
+      today.setHours(0, 0, 0, 0);
 
       const yesterday = new Date(today);
       yesterday.setDate(today.getDate() - 1);
@@ -109,11 +112,10 @@ export const useSalesStore = defineStore("sales", {
       state.saledata.forEach((sale) => {
         const saleDate = new Date(sale.saleTime);
 
-        // Only process if the sale was yesterday
         if (saleDate >= yesterday && saleDate < today) {
           const hour = saleDate.getHours();
           const hourObject = results[hour];
-          hourObject.totalSales += 1;
+          hourObject.totalSales += sale.ItemsSold;
           hourObject.totalRevenue += parseFloat(sale.revenue.replace("$", ""));
         }
       });
@@ -164,7 +166,6 @@ export const useSalesStore = defineStore("sales", {
   },
   actions: {
     getChartDataAction(val) {
-      console.log(val);
       if (val == "Daily") {
         this.salesRepresentaion = val;
         this.sales = this.saleDataHour;
@@ -181,10 +182,10 @@ export const useSalesStore = defineStore("sales", {
     },
 
     orderCompleteAction(val) {
-      console.log(val);
       this.saledata.push(val);
-      this.getChartDataAction("Daily");
-      console.log(this.saledata);
+    },
+    orderRejectAction(val) {
+      this.rejectedSales.push(val);
     },
   },
 });
