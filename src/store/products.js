@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 export const useProductStore = defineStore("product", {
   state: () => ({
-    totalProducts: 20,
-
     products: [
       {
         name: "Wireless Bluetooth Headphones",
@@ -68,12 +66,9 @@ export const useProductStore = defineStore("product", {
     ],
   }),
   getters: {
-    doubleCount: (state) => state.count * 2,
+    getProducts: (state) => state.products,
   },
   actions: {
-    increment() {
-      this.count++;
-    },
     addProductAction(i) {
       this.products.push(i);
       console.log(this.products);
@@ -92,6 +87,13 @@ export const useProductStore = defineStore("product", {
         this.products[productIndex].quantity += item.totalUnits;
         console.log("Add product count");
       }
+    },
+    updateProduct(item) {
+      console.log(item);
+      const productIndex = this.products.findIndex(
+        (el) => el.name == item.name
+      );
+      this.products[productIndex] = item;
     },
   },
 });

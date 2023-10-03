@@ -55,11 +55,11 @@
 <script setup>
 import { onMounted, watchEffect } from "vue";
 
-import SalesChart from "./SalesChart.vue";
+import SalesChart from "../Sales/SalesChart.vue";
 import ItemChart from "./ItemChart.vue";
-import SalesTable from "./SalesTable.vue";
+import SalesTable from "../Sales/SalesTable.vue";
 import { storeToRefs } from "pinia";
-import { useSalesStore } from "../store/sales";
+import { useSalesStore } from "../../store/sales";
 
 const salesStore = useSalesStore();
 const { salesRepresentaion, totalSales, totalRevenue } =

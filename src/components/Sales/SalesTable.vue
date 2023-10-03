@@ -49,8 +49,8 @@ import { ref } from "vue";
 import { toast } from "vue3-toastify";
 import { storeToRefs } from "pinia";
 
-import { useSalesStore } from "../store/sales";
-import { useProductStore } from "../store/products";
+import { useSalesStore } from "../../store/sales";
+import { useProductStore } from "../../store/products";
 
 const productStore = useProductStore();
 const salesStore = useSalesStore();

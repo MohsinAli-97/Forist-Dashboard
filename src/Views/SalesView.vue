@@ -3,5 +3,5 @@
 </template>
 
 <script setup>
-import Sales from "../components/Sales.vue";
+import Sales from "../components/Sales/Sales.vue";
 </script>

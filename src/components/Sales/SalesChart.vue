@@ -14,7 +14,7 @@ import {
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, defineComponent, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
-import { useSalesStore } from "../store/sales";
+import { useSalesStore } from "../../store/sales";
 
 const salesStore = useSalesStore();
 
