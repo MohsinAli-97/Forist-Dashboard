@@ -197,7 +197,7 @@ function confirmOrderHandler(item) {
     saleStatus: true,
   });
 
-  this.orderItems = this.orderItems.filter(
+  orderItems.value = orderItems.value.filter(
     (el) => el.transactionId != item.transactionId
   );
   productStore.updateProductFromOrderPlacedAction(item);
@@ -210,7 +210,7 @@ function cancelOrderHandler(item) {
     saleAmount: `$ ${item.price}`,
   });
 
-  this.orderItems = this.orderItems.filter(
+  orderItems.value = orderItems.value.filter(
     (el) => el.transactionId != item.transactionId
   );
   productStore.updateProductFromOrderPlacedAction({ ...item, status: false });
